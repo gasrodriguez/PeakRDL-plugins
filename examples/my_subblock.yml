@@ -1,0 +1,82 @@
+addrmap:
+  type_name: my_subblock_t
+  desc: This is a sub-block
+  addr_offset: 0x0
+  registers:
+  - inst_name: STAT
+    desc: >
+      Status register. Collection of Status flags including interrupt
+      status before enabling
+    addr_offset: 0x4
+    fields:
+    - inst_name: RXFIFO_NE
+      desc: >-
+        RX-FIFO Not Empty. This interrupt capable status flag
+        indicates
+          the RX-FIFO status and associated interrupt status before the enable stage. The flag can only be
+          implicitly cleared by reading the RXFIFO_DAT register
+      bit_offset: 0
+      bit_width: 1
+      reset: 0x1
+      sw: r
+      enum:
+        values:
+        - name: EMPTY
+          desc: RX-FIFO empty
+          value: 0
+        - name: NOT_EMPTY
+          desc: RX-FIFO not empty.
+          value: 1
+    - inst_name: RXFIFO_OVFL
+      desc: |-
+        RX-FIFO Overflow. This interrupt capable status flag indicates
+          an overflow error and associated interrupt status before the enable stage. The flag can only be
+          explicitly cleared by writing 1 to the flag.
+      bit_offset: 1
+      bit_width: 1
+      resets:
+        reset:
+          value: 0x0
+          mask: 0x1
+      bitWidth: 1
+      access: read-write
+      enumeratedValues:
+        enumeratedValue:
+          - name: NO_OVFL
+            desc: no overflow
+            value: 0
+          - name: OVFL
+            desc: overflow error
+            value: 1
+          - name: NO_EFFECT
+            desc: no effect
+            value: 0
+          - name: CLEAR
+            desc: clear flag
+            value: 1
+      modifiedWriteValue: oneToClear
+    - inst_name: RXSTATE
+      desc: RX state. This field indicates the state of the receiver.
+      bit_offset: 2
+      bit_width: 2
+      reset: 0x3
+      access: read-only
+      enumeratedValues:
+        enumeratedValue:
+          - name: IDLE
+            desc: Idle state
+            value: 0
+          - name: BUSY
+            desc: Busy state
+            value: 1
+          - name: SYNC
+            desc: Sync state
+            value: 2
+    - inst_name: reserved0
+      displayName: RESERVED
+      desc: reserved. Read value undefined. Should be written 0.
+      bit_offset: 4
+      bit_width: 4
+      sw: r
+      hw: w
+      onread: rclr

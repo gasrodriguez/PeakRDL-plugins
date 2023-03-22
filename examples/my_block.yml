@@ -1,0 +1,10 @@
+addrmap:
+  type_name: TOP
+  desc: This is a sub-block
+  addr_offset: 0x0
+  addrmaps:
+  - inst_name: SUB_BLOCK
+    type_name: my_subblock_t
+    desc: |
+      This is a sub-block instance
+    addr_offset: 0x100

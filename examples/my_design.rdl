@@ -1,0 +1,30 @@
+addrmap TOP {
+    desc = "This is a sub-block";
+    addrmap {
+        desc = "This is a sub-block instance";
+        reg {
+            desc = "Status register. Collection of Status flags including interrupt status before enabling";
+            field {
+                sw = r;
+                encode = RXFIFO_NE_enum_t;
+                desc = "RX-FIFO Not Empty. This interrupt capable status flag indicates
+                the RX-FIFO status and associated interrupt status before the enable stage. The flag can only be
+                implicitly cleared by reading the RXFIFO_DAT register";
+            } RXFIFO_NE[0:0] = 0x1;
+            field {
+                desc = "RX-FIFO Overflow. This interrupt capable status flag indicates
+                an overflow error and associated interrupt status before the enable stage. The flag can only be
+                explicitly cleared by writing 1 to the flag.";
+            } RXFIFO_OVFL[1:1];
+            field {
+                desc = "RX state. This field indicates the state of the receiver.";
+            } RXSTATE[3:2] = 0x3;
+            field {
+                sw = r;
+                hw = w;
+                onread = rclr;
+                desc = "reserved. Read value undefined. Should be written 0.";
+            } reserved0[7:4];
+        } STAT @ 0x4;
+    } SUB_BLOCK @ 0x100;
+};
